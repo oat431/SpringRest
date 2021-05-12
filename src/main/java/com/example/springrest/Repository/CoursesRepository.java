@@ -42,9 +42,18 @@ public class CoursesRepository {
         );
     }
 
-    public int deleteCourseById(long course_id){
-        return jdbcTemplate.update("delete From courses where course_id=?",
-                new Object[]{course_id}
+    public Optional<Courses> findCourseByName(String course_name){
+        return Optional.ofNullable(jdbcTemplate.queryForObject(
+            "Select * From courses Where course_name=?",
+            new Object[] {course_name},
+            new BeanPropertyRowMapper<Courses>(Courses.class)
+        )
+        );
+    }
+
+    public int deleteCourse(Courses course){
+        return jdbcTemplate.update("Delete From courses where course_id=?",
+                new Object[]{course.getCourse_id()}
         );
     }
 
